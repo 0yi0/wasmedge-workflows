@@ -1,0 +1,21 @@
+---
+name: root
+
+# https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#running-a-workflow-based-on-the-conclusion-of-another-workflow
+on:
+  workflow_run:
+    workflows: ["lint"]
+    types: [completed]
+
+jobs:
+  lint-pass:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo Lint pass on ${{ github.event.workflow_run.workflow }}
+
+  lint-fail:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo Lint fail on ${{ github.event.workflow_run.workflow }}
