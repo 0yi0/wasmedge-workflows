@@ -1,0 +1,14 @@
+---
+name: root
+
+on:
+  repository_dispatch:
+    types: [super-linter-success]
+
+permissions: {}
+
+jobs:
+  lint-pass:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/child.yml
